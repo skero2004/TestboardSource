@@ -1,0 +1,63 @@
+VPATH = src $(LIB_DIR)/$(ISP_MCU)/src $(LIB_DIR)/shared/src
+SRCS = $(notdir $(wildcard *.c src/*.c)) $(addsuffix .c, $(LIB_SRCS))
+OBJS = $(patsubst %.c, bin/%.o, $(SRCS))
+DEPS = $(OBJS:.o=.d)
+
+CORE_FLAGS = -mmcu=$(MCU) -DF_CPU=$(FCPU) -std=c99
+O_FLAGS = -Os -fshort-enums -fno-strict-aliasing
+INC_FLAGS = -Iinc -I$(LIB_DIR)/$(ISP_MCU)/inc -I$(LIB_DIR)/shared/inc
+MACRO_FLAGS = $(patsubst %, -D%, $(MACROS))
+WARN_FLAGS = -Wall -Wextra -pedantic
+DEP_FLAGS = -MMD -MP -MF $(@:.o=.d)
+COM_FLAGS = $(CORE_FLAGS) $(O_FLAGS) $(INC_FLAGS) $(WARN_FLAGS) 
+CC_FLAGS = $(COM_FLAGS) $(MACRO_FLAGS) $(DEP_FLAGS)
+LD_FLAGS = $(COM_FLAGS)
+COPY_FLAGS = -j .text -j .data -O ihex
+
+ISP_FLAGS = -c usbtiny -p $(ISP_MCU) -q
+WRITE_FLAGS = -e
+LFUSE_FLAGS = -U lfuse:w:0x$(word 1, $(FUSES)):m
+HFUSE_FLAGS = -U hfuse:w:0x$(word 2, $(FUSES)):m
+EFUSE_FLAGS = -U efuse:w:0x$(word 3, $(FUSES)):m
+FUSE_FLAGS = $(LFUSE_FLAGS) $(HFUSE_FLAGS) $(EFUSE_FLAGS)
+
+all: bin/$(PROJECT).hex
+
+bin/%.o: %.c makefile | bin
+	@echo avr-gcc $(notdir $@)
+	@avr-gcc $(CC_FLAGS) -c $< -o $@
+	@echo
+
+bin/$(PROJECT).elf: $(OBJS)
+	@echo avr-gcc $(notdir $@)
+	@avr-gcc $(LD_FLAGS) $^ -o $@
+	@echo
+
+bin/$(PROJECT).hex: bin/$(PROJECT).elf
+	@echo avr-objcopy $(notdir $@)
+	@avr-objcopy $(COPY_FLAGS) $< $@
+	@echo
+
+check:
+	@avrdude $(ISP_FLAGS)
+
+fuse:
+	@avrdude $(ISP_FLAGS) $(WRITE_FLAGS) $(FUSE_FLAGS)
+
+write: bin/$(PROJECT).hex
+	@avrdude $(ISP_FLAGS) $(WRITE_FLAGS) -U flash:w:$<
+
+size:
+	avr-size -C --mcu=$(MCU) bin/$(PROJECT).elf
+
+bin:
+	@echo mkdir $@
+	@mkdir $@
+	@echo
+
+clean:
+	@echo rm bin
+	@rm -rf bin
+	@echo
+
+-include $(DEPS)
