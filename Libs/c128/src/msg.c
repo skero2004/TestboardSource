@@ -63,6 +63,12 @@ void msgEnable(MsgType msgType, uint8_t msgMode) {
 		case MSG_MOTOR_CMD:
 			canSetConfig(MSG_MOTOR_CMD, msgMode, 0x0501, 8);
 			break;
+
+		case MSG_BATT_CHARGE:
+			canSetConfig(MSG_BATT_CHARGE, msgMode, __indenfitifer__, _number_of_bytes_);
+			//identifier: identifier to help the receiving computer determine whether it should read the msg or not (idenfitifer is specific to the receiver; we should find this in the CAN charger documentation)
+			//number_of_bytes: "how long is our message (in bytes)? - CAN Messages Slides"
+			break;
 	}
 }
 

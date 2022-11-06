@@ -22,7 +22,8 @@ typedef enum {
 	MSG_MOTOR_STAT,
 	MSG_MOTOR_VEL,
 	MSG_MOTOR_TEMP,
-	MSG_MOTOR_CMD
+	MSG_MOTOR_CMD,
+	MSG_BATT_CHARGE
 } MsgType;
 
 typedef struct {
@@ -117,6 +118,10 @@ typedef struct {
 	float fVelDrive;
 	float fCurDrive;
 } MsgMotorCmd;
+
+typedef struct {
+	int16_t charge_cur;
+} MsgBattCharge;
 
 void msgEnable(MsgType msgType, uint8_t msgMode);
 void msgInit(void);

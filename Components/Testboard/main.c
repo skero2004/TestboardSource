@@ -1,20 +1,28 @@
 #include <util/delay.h>
+#include <stdlib.h>
+#include <string.h>
+#include "serial.h"
+#include "adc.h"
+#include "log.h"
 #include "msg.h"
+#include "sutil.h"
+#include "ttimer.h"
+#include "ctimer.h"
 
 #define DELAY 250
+#define STARTUP_DELAY 250
 
-MsgBattSOC msgBattSoc;
+MsgBattCharge msgBattCharge;
 
 int main(void) {
-	msgEnable(MSG_BATT_SOC, MSG_TX);
+	_delay_ms(STARTUP_DELAY);
+	// timerInit();
+	transmitInit();
 	msgInit();
 
-	msgBattSoc.soc = 88;
-
 	while(1) {
-		msgWrite(MSG_BATT_SOC, &msgBattSoc);
-		_delay_ms(DELAY);
+		if (ttimerPoll()) {
+			transmit();
+		}
 	}
-
-	return 0;
 }
