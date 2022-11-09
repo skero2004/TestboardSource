@@ -4,4 +4,7 @@
 void setup(void);
 void sendCANSignal(void);
 
+void transmitInit(void);
+void transmit(void);
+
 #endif

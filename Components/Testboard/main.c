@@ -6,6 +6,7 @@
 #include "log.h"
 #include "msg.h"
 #include "sutil.h"
+// #include "ttimer.h"
 #include "ttimer.h"
 #include "ctimer.h"
 
@@ -16,7 +17,7 @@ MsgBattCharge msgBattCharge;
 
 int main(void) {
 	_delay_ms(STARTUP_DELAY);
-	// timerInit();
+	ttimerInit();
 	transmitInit();
 	msgInit();
 

@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <avr/pgmspace.h>
+// #include <avr/pgmspace.h>
 
 void sutilWrite(char *string, uint8_t pos, char *data);
 void sutilWritePgm(char *string, uint8_t pos, const char *data);

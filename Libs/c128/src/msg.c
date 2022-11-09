@@ -65,7 +65,7 @@ void msgEnable(MsgType msgType, uint8_t msgMode) {
 			break;
 
 		case MSG_BATT_CHARGE:
-			canSetConfig(MSG_BATT_CHARGE, msgMode, __indenfitifer__, _number_of_bytes_);
+			canSetConfig(MSG_BATT_CHARGE, msgMode, 0x0601, 8);
 			//identifier: identifier to help the receiving computer determine whether it should read the msg or not (idenfitifer is specific to the receiver; we should find this in the CAN charger documentation)
 			//number_of_bytes: "how long is our message (in bytes)? - CAN Messages Slides"
 			break;
@@ -194,6 +194,12 @@ void msgRead(MsgType msgType, void *msg) {
 			m->fCurDrive = readFloat(4);
 			break;
 		}
+		case MSG_BATT_CHARGE: {
+			MsgBattCharge* m = (MsgBattCharge*) msg;
+			m->charge_cur = readFloat(0);
+			//I think the parameter in readFloat is the bit to start reading information from??? however, the CAN charger wants 8-byte data???
+			break;
+		}
 	}
 }
 
@@ -308,6 +314,12 @@ void msgWrite(MsgType msgType, void *msg) {
 			MsgMotorCmd* m = (MsgMotorCmd*) msg;
 			writeFloat(m->fVelDrive, 0);
 			writeFloat(m->fCurDrive, 4);
+			break;
+		}
+		case MSG_BATT_CHARGE: {
+			MsgBattCharge* m = (MsgBattCharge*) msg;
+			writeFloat(m->charge_cur, 0);
+			//No idea whawt the 2nd parameter in writeFloat() is
 			break;
 		}
 	}
