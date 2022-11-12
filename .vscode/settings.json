@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "testboardsource.h": "c"
+        "testboardsource.h": "c",
+        "stdint.h": "c"
     }
 }

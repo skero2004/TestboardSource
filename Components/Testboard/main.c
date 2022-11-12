@@ -15,15 +15,29 @@
 
 MsgBattCharge msgBattCharge;
 
+StateCharge stateCharge;
+
 int main(void) {
-	_delay_ms(STARTUP_DELAY);
 	ttimerInit();
 	transmitInit();
 	msgInit();
+	_delay_ms(STARTUP_DELAY);
 
 	while(1) {
 		if (ttimerPoll()) {
-			transmit();
+			// if (msgAvailable(MSG_BATT_CHARGE)) {
+			// 	msgRead(MSG_BATT_CHARGE, &msgBattCharge);
+			// 	dashLog.mode = msgBattStat.mode;
+			// 	dashLog.balState = msgBattStat.balState;
+			// 	dashLog.bfanState = msgBattStat.bfanState;
+			// 	dashLog.motorState = msgBattStat.motorState;
+			// 	dashLog.arrayState = msgBattStat.arrayState;
+			// 	dashLog.systemsState = msgBattStat.systemsState;
+			// 	ctimerReset(0);
+			// }
+			stateCharge.current = 1;
+			stateCharge.voltage = 12;	//random numbers for now
+			transmit(&stateCharge);
 		}
 	}
 }

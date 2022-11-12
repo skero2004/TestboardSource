@@ -1,10 +1,9 @@
-#ifndef CANCHARGER_H
-#define CANCHARGER_H
+#ifndef TRANSMIT_H
+#define TRANSMIT_H
 
-void setup(void);
-void sendCANSignal(void);
+#include "state.h"
 
 void transmitInit(void);
-void transmit(void);
+void transmit(StateCharge *stateCharge);
 
 #endif

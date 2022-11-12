@@ -120,7 +120,8 @@ typedef struct {
 } MsgMotorCmd;
 
 typedef struct {
-	int16_t charge_cur;
+	uint8_t charge_cur;
+	uint8_t charge_voltage;
 } MsgBattCharge;
 
 void msgEnable(MsgType msgType, uint8_t msgMode);

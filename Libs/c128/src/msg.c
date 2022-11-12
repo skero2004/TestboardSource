@@ -317,9 +317,18 @@ void msgWrite(MsgType msgType, void *msg) {
 			break;
 		}
 		case MSG_BATT_CHARGE: {
+			//msgBattCharge is a struct
+			//msg is the pointer to the message object passed into this function
 			MsgBattCharge* m = (MsgBattCharge*) msg;
-			writeFloat(m->charge_cur, 0);
-			//No idea whawt the 2nd parameter in writeFloat() is
+			//This is what the message needs to look like: https://onedrive.live.com/?authkey=%21AKocUPTa4Amu0b8&cid=49EB4B401F0CD666&id=49EB4B401F0CD666%2189777&parId=49EB4B401F0CD666%2189775&o=OneUp
+			writeByte(m->charge_voltage, 0);
+			writeByte(m->charge_voltage, 1);
+			writeByte(m->charge_cur, 2);
+			writeByte(m->charge_cur, 3);
+			writeByte(0, 4);
+			writeByte(0, 5);
+			writeByte(0, 6);
+			writeByte(0, 7);
 			break;
 		}
 	}
