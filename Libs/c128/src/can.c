@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include "can.h"
 
-#define MOB_COUNT 15
+#define MOB_COUNT 17	//ADDED 2 TO THIS NUMBER BC WE ADDED 2 NEW MESSAGES (USED TO BE 15)
 
 #if F_CPU != 16000000UL
 	#error only clock rate of 16000000 is supported
@@ -9,7 +9,7 @@
 
 typedef struct {
 	uint8_t mode[MOB_COUNT];
-	uint16_t id[MOB_COUNT];
+	uint32_t id[MOB_COUNT];		//NOTE THIS IS A MAJOR CHANGE; USED TO BE uint16_t, BUT WE CHANGED TO 64 SO THAT IT CAN WORK WITH THE 32-BIT ADDRESS OF THE CAN CHARGER
 	uint8_t len[MOB_COUNT];
 } Config;
 

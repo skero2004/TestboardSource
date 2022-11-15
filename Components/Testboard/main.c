@@ -41,3 +41,13 @@ int main(void) {
 		}
 	}
 }
+
+
+/*
+NOTES
+- the same MSG can be set to TX and RX by different boards, depending on whether they write the message or need to read from it
+	- example: MSG_BATT_STAT is written to by the battery control board (TX), but read by multiple other boards that want to know if there's a battery error
+- create new MSG for receiving from the CAN charger (this will be in RX mode for all boards)
+	- to enable RX functionality, create and implement poll.c and poll.h
+- 
+*/

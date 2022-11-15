@@ -65,7 +65,13 @@ void msgEnable(MsgType msgType, uint8_t msgMode) {
 			break;
 
 		case MSG_BATT_CHARGE:
-			canSetConfig(MSG_BATT_CHARGE, msgMode, 0x0601, 8);
+			canSetConfig(MSG_BATT_CHARGE, msgMode, 0x1806E5F4, 8);
+			//identifier: identifier to help the receiving computer determine whether it should read the msg or not (idenfitifer is specific to the receiver; we should find this in the CAN charger documentation)
+			//number_of_bytes: "how long is our message (in bytes)? - CAN Messages Slides"
+			break;
+
+		case MSG_CHARGE_STAT:
+			canSetConfig(MSG_CHARGE_STAT, msgMode, 0x18FF50E5, 8);
 			//identifier: identifier to help the receiving computer determine whether it should read the msg or not (idenfitifer is specific to the receiver; we should find this in the CAN charger documentation)
 			//number_of_bytes: "how long is our message (in bytes)? - CAN Messages Slides"
 			break;
@@ -196,8 +202,15 @@ void msgRead(MsgType msgType, void *msg) {
 		}
 		case MSG_BATT_CHARGE: {
 			MsgBattCharge* m = (MsgBattCharge*) msg;
-			m->charge_cur = readFloat(0);
-			//I think the parameter in readFloat is the bit to start reading information from??? however, the CAN charger wants 8-byte data???
+			m->charge_voltage = readByte(0);
+			m->charge_cur = readByte(2);
+			break;
+		}
+		case MSG_CHARGE_STAT: {
+			MsgChargeStat* m = (MsgChargeStat*) msg;
+			m->charge_voltage = readByte(0);
+			m->charge_cur = readByte(2);
+			m->charge_status_flags = readByte(4);
 			break;
 		}
 	}
@@ -326,6 +339,18 @@ void msgWrite(MsgType msgType, void *msg) {
 			writeByte(m->charge_cur, 2);
 			writeByte(m->charge_cur, 3);
 			writeByte(0, 4);
+			writeByte(0, 5);
+			writeByte(0, 6);
+			writeByte(0, 7);
+			break;
+		}
+		case MSG_CHARGE_STAT: {
+			MsgChargeStat* m = (MsgChargeStat*) msg;
+			writeByte(m->charge_voltage, 0);
+			writeByte(m->charge_voltage, 1);
+			writeByte(m->charge_cur, 2);
+			writeByte(m->charge_cur, 3);
+			writeByte(m->charge_status_flags, 4);
 			writeByte(0, 5);
 			writeByte(0, 6);
 			writeByte(0, 7);
