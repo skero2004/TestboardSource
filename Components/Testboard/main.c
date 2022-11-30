@@ -9,13 +9,12 @@
 // #include "ttimer.h"
 #include "ttimer.h"
 #include "ctimer.h"
+#include "state.h"
 
 #define DELAY 250
 #define STARTUP_DELAY 250
 
-MsgBattCharge msgBattCharge;
-
-StateCharge stateCharge;
+StateCharge stateCharge;		// struct that is read into, and after reading is done, its values are edited and transmitted
 
 int main(void) {
 	ttimerInit();
@@ -25,16 +24,13 @@ int main(void) {
 
 	while(1) {
 		if (ttimerPoll()) {
-			// if (msgAvailable(MSG_BATT_CHARGE)) {
-			// 	msgRead(MSG_BATT_CHARGE, &msgBattCharge);
-			// 	dashLog.mode = msgBattStat.mode;
-			// 	dashLog.balState = msgBattStat.balState;
-			// 	dashLog.bfanState = msgBattStat.bfanState;
-			// 	dashLog.motorState = msgBattStat.motorState;
-			// 	dashLog.arrayState = msgBattStat.arrayState;
-			// 	dashLog.systemsState = msgBattStat.systemsState;
-			// 	ctimerReset(0);
-			// }
+			pollCharge(&stateCharge);	//pass in memory address to stateCharge struct; pollCharge will write new values into the memory location of strateCharge
+
+			//NOW THE VALUES IN *stateCharge struct have been updated; read these values and perform actions as needed
+			//i.e. if (stateCharge.current > 1) stopChargeOrSomethingLikeThat();
+			
+
+			//now that the read values in stateCharge have been used and processed, edit values of stateCharge to become the message we want to transmit
 			stateCharge.current = 1;
 			stateCharge.voltage = 12;	//random numbers for now
 			transmit(&stateCharge);

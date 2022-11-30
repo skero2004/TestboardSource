@@ -1,7 +1,9 @@
 #include <avr/io.h>
 #include "can.h"
 
+//MOB = message object (the number of mailboxes to transmit and receive messages)
 #define MOB_COUNT 17	//ADDED 2 TO THIS NUMBER BC WE ADDED 2 NEW MESSAGES (USED TO BE 15)
+//Each mob is defined as a struct
 
 #if F_CPU != 16000000UL
 	#error only clock rate of 16000000 is supported
@@ -22,12 +24,14 @@ void canSetConfig(uint8_t index, uint8_t mode, uint16_t id, uint8_t len) {
 }
 
 void canInit(void) {
-	// baud rate 125kbps
-	DDRD |= 0x80;
+	DDRD |= 0x80;	//INITIALIZES SOME PORT (port D7?) TO OUTPUT       //data direction register, group d
+
+	// bit timing; CANBTx are specific to baud rate 125kbps
 	CANBT1 = 0x0E;
 	CANBT2 = 0x0C;
 	CANBT3 = 0x37;
-
+	
+	//configure MObi     (i is the for loop counter)
 	for (uint8_t i = 0; i < MOB_COUNT; i++) {
 		CANPAGE = (i<<4);
 
