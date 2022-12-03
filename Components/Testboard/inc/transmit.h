@@ -4,6 +4,6 @@
 #include "state.h"
 
 void transmitInit(void);
-void transmit(StateCharge *stateCharge);
+void transmit(MsgBattCharge *msgBattCharge);
 
 #endif
