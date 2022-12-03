@@ -28,11 +28,13 @@ int main(void) {
 
 			//NOW THE VALUES IN *stateCharge struct have been updated; read these values and perform actions as needed
 			//i.e. if (stateCharge.current > 1) stopChargeOrSomethingLikeThat();
+
+
 			
 
 			//now that the read values in stateCharge have been used and processed, edit values of stateCharge to become the message we want to transmit
-			stateCharge.current = 1;
-			stateCharge.voltage = 12;	//random numbers for now
+			stateCharge.current = stateCharge.current;
+			stateCharge.voltage = stateCharge.voltage;	//random numbers for now
 			transmit(&stateCharge);
 		}
 	}

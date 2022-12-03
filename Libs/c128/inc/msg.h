@@ -126,8 +126,8 @@ typedef struct {
 } MsgBattCharge;
 
 typedef struct {
-	uint8_t charge_cur;
-	uint8_t charge_voltage;
+	uint8_t charge_cur;			//should be 16
+	uint8_t charge_voltage;		//should be 16
 	uint8_t charge_status_flags;
 } MsgChargeStat;
 

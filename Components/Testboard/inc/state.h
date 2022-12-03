@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 typedef struct {
-	int16_t current;    //not sure if int16_t is the right type
+	int16_t current;
     int16_t voltage;
 } StateCharge;
 
