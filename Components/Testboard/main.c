@@ -6,15 +6,16 @@
 #include "log.h"
 #include "msg.h"
 #include "sutil.h"
-// #include "ttimer.h"
 #include "ttimer.h"
 #include "ctimer.h"
-#include "state.h"
+// #include "state.h"
 
 #define DELAY 250
 #define STARTUP_DELAY 250
 
-StateCharge stateCharge;		// struct that is read into, and after reading is done, its values are edited and transmitted
+// StateCharge stateCharge;		// struct that is read into, and after reading is done, its values are edited and transmitted
+MsgChargeStat msgChargeStat;
+MsgBattCharge msgBattCharge; 	
 
 int main(void) {
 	ttimerInit();
@@ -24,7 +25,8 @@ int main(void) {
 
 	while(1) {
 		if (ttimerPoll()) {
-			pollCharge(&stateCharge);	//pass in memory address to stateCharge struct; pollCharge will write new values into the memory location of strateCharge
+			// pollCharge(&stateCharge);	//pass in memory address to stateCharge struct; pollCharge will write new values into the memory location of strateCharge
+			pollCharge(&msgChargeStat);
 
 			//NOW THE VALUES IN *stateCharge struct have been updated; read these values and perform actions as needed
 			//i.e. if (stateCharge.current > 1) stopChargeOrSomethingLikeThat();
@@ -32,10 +34,11 @@ int main(void) {
 
 			
 
-			//now that the read values in stateCharge have been used and processed, edit values of stateCharge to become the message we want to transmit
-			stateCharge.current = stateCharge.current;
-			stateCharge.voltage = stateCharge.voltage;	//random numbers for now
-			transmit(&stateCharge);
+			//now that the read values in stateCharge have been used and processed, edit values of msgBattCharge to become the message we want to transmit
+			msgBattCharge.current = msgChargeStat.current;
+			msgBattCharge.voltage = msgChargeStat.voltage;	//passing back in the same values we read
+			msgBattCharge.control = 1;
+			transmit(&msgBattCharge);
 		}
 	}
 }

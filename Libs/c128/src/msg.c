@@ -200,12 +200,12 @@ void msgRead(MsgType msgType, void *msg) {
 			m->fCurDrive = readFloat(4);
 			break;
 		}
-		case MSG_BATT_CHARGE: {
-			MsgBattCharge* m = (MsgBattCharge*) msg;
-			m->charge_voltage = readByte(0);
-			m->charge_cur = readByte(2);
-			break;
-		}
+		// case MSG_BATT_CHARGE: {
+		// 	MsgBattCharge* m = (MsgBattCharge*) msg;
+		// 	m->charge_voltage = readByte(0);
+		// 	m->charge_cur = readByte(2);
+		// 	break;
+		// }
 		case MSG_CHARGE_STAT: {
 			MsgChargeStat* m = (MsgChargeStat*) msg;
 			m->charge_voltage = readByte(0);
@@ -335,27 +335,23 @@ void msgWrite(MsgType msgType, void *msg) {
 			MsgBattCharge* m = (MsgBattCharge*) msg;
 			//This is what the message needs to look like: https://onedrive.live.com/?authkey=%21AKocUPTa4Amu0b8&cid=49EB4B401F0CD666&id=49EB4B401F0CD666%2189777&parId=49EB4B401F0CD666%2189775&o=OneUp
 			writeByte(m->charge_voltage, 0);
-			writeByte(m->charge_voltage, 1);
 			writeByte(m->charge_cur, 2);
-			writeByte(m->charge_cur, 3);
-			writeByte(0, 4);
+			writeByte(m->control, 4);
 			writeByte(0, 5);
 			writeByte(0, 6);
 			writeByte(0, 7);
 			break;
 		}
-		case MSG_CHARGE_STAT: {
-			MsgChargeStat* m = (MsgChargeStat*) msg;
-			writeByte(m->charge_voltage, 0);
-			writeByte(m->charge_voltage, 1);
-			writeByte(m->charge_cur, 2);
-			writeByte(m->charge_cur, 3);
-			writeByte(m->charge_status_flags, 4);
-			writeByte(0, 5);
-			writeByte(0, 6);
-			writeByte(0, 7);
-			break;
-		}
+		// case MSG_CHARGE_STAT: {
+		// 	MsgChargeStat* m = (MsgChargeStat*) msg;
+		// 	writeByte(m->charge_voltage, 0);
+		// 	writeByte(m->charge_cur, 2);
+		// 	writeByte(m->charge_status_flags, 4);
+		// 	writeByte(0, 5);
+		// 	writeByte(0, 6);
+		// 	writeByte(0, 7);
+		// 	break;
+		// }
 	}
 
 	canWrite(msgType, data);

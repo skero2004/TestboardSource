@@ -121,13 +121,14 @@ typedef struct {
 } MsgMotorCmd;
 
 typedef struct {
-	uint8_t charge_cur;
-	uint8_t charge_voltage;
+	uint16_t charge_cur;
+	uint16_t charge_voltage;
+	uint8_t control;
 } MsgBattCharge;
 
 typedef struct {
-	uint8_t charge_cur;			//should be 16
-	uint8_t charge_voltage;		//should be 16
+	uint16_t charge_cur;
+	uint16_t charge_voltage;
 	uint8_t charge_status_flags;
 } MsgChargeStat;
 

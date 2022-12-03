@@ -1,12 +1,13 @@
-#ifndef STATE_H
-#define STATE_H
+// #ifndef STATE_H
+// #define STATE_H
 
-#include <stdint.h>
-#include <stdbool.h>
+// #include <stdint.h>
+// #include <stdbool.h>
 
-typedef struct {
-	int16_t current;
-    int16_t voltage;
-} StateCharge;
+// typedef struct {
+// 	uint16_t current;
+//     uint16_t voltage;
+//     uint8_t charge_status_flags;
+// } StateCharge;
 
-#endif
+// #endif
