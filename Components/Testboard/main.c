@@ -35,9 +35,14 @@ int main(void) {
 			
 
 			//now that the read values in stateCharge have been used and processed, edit values of msgBattCharge to become the message we want to transmit
-			msgBattCharge.charge_cur = msgChargeStat.charge_cur;
-			msgBattCharge.charge_voltage = msgChargeStat.charge_voltage;	//passing back in the same values we read
+			// msgBattCharge.charge_cur = msgChargeStat.charge_cur;
+			// msgBattCharge.charge_voltage = msgChargeStat.charge_voltage;	//passing back in the same values we read
+			// msgBattCharge.control = 1;
+
+			msgBattCharge.charge_cur = 12;
+			msgBattCharge.charge_voltage = 20;	//passing back in the same values we read
 			msgBattCharge.control = 1;
+
 			transmit(&msgBattCharge);
 		}
 	}

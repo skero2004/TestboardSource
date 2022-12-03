@@ -35,8 +35,8 @@ void canInit(void) {
 	for (uint8_t i = 0; i < MOB_COUNT; i++) {
 		CANPAGE = (i<<4);
 
-		CANIDT1 = (config.id[i]>>3);
-		CANIDT2 = (config.id[i]<<5);
+		CANIDT1 = (config.id[i]>>3);	//get the left 5 bytes of id?
+		CANIDT2 = (config.id[i]<<5);	//get the right 3 bytes of id?
 		CANIDT3 = 0;
 		CANIDT4 = 0;
 
